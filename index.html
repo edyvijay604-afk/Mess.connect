@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mess Connect – Eat. Rate. Connect. Improve.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf8ff;
+    --surface: #ffffff;
+    --ink: #131b2e;
+    --body: #5a4138;
+    --muted: #8e7166;
+    --primary: #a33900;
+    --primary-soft: #ffdbce;
+    --green: #006c49;
+    --green-soft: rgba(111, 251, 190, 0.5);
+    --blue-soft: #e2e7ff;
+    --blue-pale: #f2f3ff;
+    --amber-soft: #ffddb8;
+    --star: #825100;
+    --shadow: 0 1px 2px rgba(0,0,0,0.05), 0 1px 1px rgba(0,0,0,0.04);
+    --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-head: 'Space Grotesk', 'Plus Jakarta Sans', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font-body); background: var(--bg); color: var(--ink); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; cursor: pointer; border: none; background: none; }
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+  .section { padding: 96px 0; }
+  .section.alt { background: var(--bg); }
+  h1, h2, h3, h4 { font-family: var(--font-head); color: var(--ink); line-height: 1.15; }
+  h1 { font-size: 48px; letter-spacing: -1.44px; font-weight: 700; }
+  h2 { font-size: 36px; letter-spacing: -0.72px; font-weight: 700; }
+  h3 { font-size: 18px; font-weight: 600; }
+  p { color: var(--body); }
+  .eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px; border-radius: 9999px; background: var(--primary-soft); color: #7f2b00; font-size: 11px; font-weight: 700; letter-spacing: .44px; text-transform: uppercase; }
+  .pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 9999px; background: var(--blue-soft); color: var(--ink); font-size: 11px; font-weight: 700; letter-spacing: .44px; }
+  .pill.green { background: var(--green-soft); color: #002113; }
+  .pill.amber { background: var(--amber-soft); color: #2a1700; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); display: inline-block; flex-shrink: 0; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; background: var(--blue-soft); color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .44px; }
+  .tag.green { background: var(--green-soft); color: #002113; }
+  .tag.amber { background: var(--amber-soft); color: #2a1700; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 14px 24px; border-radius: 12px; font-weight: 600; font-size: 14px; letter-spacing: .14px; transition: transform .15s ease, box-shadow .15s ease, background .15s ease; }
+  .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-lg); }
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-soft { background: var(--blue-soft); color: var(--ink); }
+  .btn-sm { padding: 8px 16px; font-size: 12px; letter-spacing: .24px; }
+  .card { background: var(--surface); border-radius: 16px; box-shadow: var(--shadow); padding: 24px; }
+  .placeholder-img { background: linear-gradient(135deg, #dfe3f3 0%, #f3e6dd 100%); display: flex; align-items: flex-end; justify-content: flex-start; color: var(--body); font-size: 11px; font-weight: 700; letter-spacing: .44px; }
+  .placeholder-img span { background: rgba(40,48,68,0.85); color: #eef0ff; padding: 4px 10px; border-radius: 6px; margin: 8px; }
+
+  /* Header */
+  .site-header { position: sticky; top: 0; z-index: 50; background: rgba(250,248,255,0.9); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(226,191,178,0.3); box-shadow: 0 1px 8px rgba(0,0,0,0.04); }
+  .header-inner { height: 80px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+  .brand { display: flex; align-items: center; gap: 8px; }
+  .logo-mark { width: 32px; height: 32px; border-radius: 8px; background: var(--primary); color: #fff; display: grid; place-items: center; font-family: var(--font-head); font-weight: 700; font-size: 14px; }
+  .brand-name { font-family: var(--font-head); font-weight: 700; color: var(--primary); font-size: 18px; line-height: 1.1; }
+  .live-pill { background: var(--green-soft); border: 1px solid rgba(0,108,73,.2); color: #002113; font-size: 11px; font-weight: 700; padding: 5px 9px; border-radius: 9999px; display: inline-flex; gap: 6px; align-items: center; white-space: nowrap; }
+  .nav { display: flex; gap: 20px; align-items: center; }
+  .nav a { font-size: 14px; font-weight: 600; color: var(--body); }
+  .nav a:hover { color: var(--primary); }
+  .header-actions { display: flex; gap: 12px; align-items: center; }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg,#c9a58f,#7f5a46); box-shadow: 0 0 0 2px rgba(163,57,0,.2); }
+  .menu-toggle { display: none; font-size: 22px; color: var(--ink); }
+
+  /* Hero (Section 1:114) */
+  .hero { padding: 64px 0 80px; position: relative; overflow: hidden; }
+  .hero-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 48px; align-items: center; }
+  .hero h1 { margin-top: 16px; }
+  .hero h1 .accent { color: var(--primary); text-decoration: underline; text-decoration-color: var(--primary-soft); text-decoration-thickness: 2px; text-decoration-style: wavy; text-underline-offset: 6px; }
+  .hero .sub { font-size: 18px; margin-top: 16px; max-width: 640px; }
+  .hero .detail { font-size: 15px; color: var(--muted); margin-top: 16px; max-width: 576px; }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 32px; }
+  .stats-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 40px; max-width: 576px; }
+  .stat { background: #fff; border-radius: 12px; padding: 12px; box-shadow: var(--shadow); }
+  .stat .num { font-family: var(--font-head); font-weight: 700; font-size: 22px; letter-spacing: -.22px; color: var(--primary); }
+  .stat .num.gold { color: var(--star); }
+  .stat .num.green { color: var(--green); }
+  .stat .label { font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: .44px; margin-top: 2px; }
+  .hero-visual { position: relative; }
+  .hero-photo { background: #fff; border-radius: 16px; padding: 8px; box-shadow: var(--shadow-lg); }
+  .hero-photo .photo { height: 384px; border-radius: 12px; position: relative; overflow: hidden; background: linear-gradient(160deg,#c9d4e6,#e9dcc8 60%,#b98f6c); }
+  .photo-gradient { position: absolute; inset: 0; background: linear-gradient(to top, rgba(40,48,68,.8), rgba(40,48,68,0) 55%); }
+  .photo-tag { position: absolute; top: 16px; left: 16px; background: rgba(250,248,255,.9); backdrop-filter: blur(6px); padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: 600; color: var(--ink); display: flex; gap: 8px; align-items: center; }
+  .special-card { position: absolute; left: 16px; right: 16px; bottom: 16px; background: rgba(250,248,255,.95); backdrop-filter: blur(6px); border-radius: 12px; padding: 16px; box-shadow: var(--shadow-lg); }
+  .special-top { display: flex; justify-content: space-between; align-items: center; }
+  .special-label { font-size: 11px; font-weight: 700; color: var(--primary); letter-spacing: .55px; text-transform: uppercase; }
+  .special-card h4 { font-size: 16px; font-weight: 600; margin-top: 6px; font-family: var(--font-body); }
+  .special-meta { display: flex; justify-content: space-between; margin-top: 4px; font-size: 13px; color: var(--muted); gap: 12px; }
+  .special-meta b { color: var(--green); font-size: 11px; letter-spacing: .44px; white-space: nowrap; }
+  .mini-widget { position: absolute; left: -32px; bottom: -24px; background: #fff; border-radius: 12px; padding: 12px 16px 12px 12px; display: flex; gap: 12px; align-items: center; box-shadow: var(--shadow-lg); }
+  .mini-icon { width: 40px; height: 40px; border-radius: 50%; background: rgba(111,251,190,.5); display: grid; place-items: center; color: var(--green); font-weight: 700; }
+  .mini-widget strong { font-size: 12px; letter-spacing: .24px; display: block; }
+  .mini-widget span { font-size: 11px; color: var(--muted); font-weight: 700; letter-spacing: .44px; }
+  .glow { position: absolute; border-radius: 50%; filter: blur(80px); opacity: .35; pointer-events: none; }
+  .glow.a { width: 384px; height: 384px; background: #ffdbce; top: -128px; left: -80px; }
+  .glow.b { width: 480px; height: 480px; background: #dae2fd; bottom: -120px; right: -100px; }
+
+  /* Bento (Section 1:5) */
+  .bento-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; flex-wrap: wrap; margin-bottom: 40px; }
+  .bento-head p { font-size: 18px; margin-top: 8px; }
+  .bento-head .intro { max-width: 448px; font-size: 16px; }
+  .bento { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .bento .card { display: flex; flex-direction: column; gap: 12px; }
+  .bento .card.span-2 { grid-column: span 2; }
+  .icon-box { width: 48px; height: 48px; border-radius: 12px; background: var(--blue-soft); display: grid; place-items: center; font-size: 22px; }
+  .bento .card p { font-size: 15px; }
+  .bento .card .foot { margin-top: auto; }
+  .star-row { display: flex; gap: 6px; font-size: 18px; color: var(--star); letter-spacing: 2px; }
+  .inline-chip { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink); font-weight: 600; }
+  .trust-banner { margin-top: 24px; background: var(--surface); border-radius: 16px; box-shadow: var(--shadow); padding: 24px; display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; }
+  .trust-banner .left { display: flex; gap: 16px; align-items: center; }
+  .trust-banner h4 { font-size: 16px; }
+  .trust-banner p { font-size: 14px; margin-top: 2px; }
+  .trust-banner .badge { background: var(--blue-soft); padding: 10px 16px; border-radius: 12px; font-weight: 600; font-size: 14px; color: var(--ink); }
+
+  /* Student voices (Section 1:519) */
+  .voices { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  .voices .micro { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 32px; }
+  .micro .m { background: #fff; border-radius: 12px; padding: 16px; box-shadow: var(--shadow-lg); }
+  .micro .m .v { font-family: var(--font-head); font-size: 28px; font-weight: 700; color: var(--primary); }
+  .micro .m .k { font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: .44px; margin-top: 4px; }
+  .quote { background: linear-gradient(135deg, #fff 0%, #f6efff 100%); border-radius: 16px; padding: 40px; position: relative; overflow: hidden; box-shadow: var(--shadow-lg); }
+  .quote::before { content: ""; position: absolute; top: -40px; right: -40px; width: 192px; height: 192px; border-radius: 50%; background: rgba(255,219,206,.6); filter: blur(30px); }
+  .quote .qmark { font-family: var(--font-head); font-size: 56px; color: var(--primary); line-height: 1; position: relative; }
+  .quote blockquote { font-family: var(--font-head); font-size: 24px; line-height: 1.35; color: var(--ink); margin-top: 8px; position: relative; font-weight: 500; }
+  .quote .by { display: flex; gap: 12px; align-items: center; margin-top: 28px; position: relative; }
+  .quote .by .av { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg,#f0c7b1,#a88172); }
+  .quote .by strong { font-size: 14px; display: block; }
+  .quote .by span { font-size: 13px; color: var(--muted); }
+
+  /* Meals (Section 1:198) */
+  .meals-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
+  .meals-head p { font-size: 18px; margin-top: 8px; }
+  .action-group { display: flex; gap: 8px; flex-wrap: wrap; }
+  .day-tabs { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; margin: 24px 0; }
+  .tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+  .tab { padding: 8px 16px; border-radius: 12px; background: var(--blue-soft); color: var(--body); font-size: 12px; font-weight: 600; white-space: nowrap; letter-spacing: .24px; }
+  .tab.active { background: var(--primary); color: #fff; box-shadow: var(--shadow); }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip { padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: 700; letter-spacing: .44px; background: var(--blue-soft); color: var(--ink); }
+  .chip.muted { color: var(--muted); }
+  .chip.green { background: var(--green-soft); color: #002113; }
+  .chip.amber { background: var(--amber-soft); color: #2a1700; }
+  .chip.active { outline: 2px solid var(--green); outline-offset: 0; }
+  .meal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .meal { display: flex; flex-direction: column; gap: 12px; padding: 24px; position: relative; }
+  .meal.featured { box-shadow: var(--shadow-lg); }
+  .meal-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .meal-time { display: flex; gap: 8px; align-items: center; }
+  .meal-time small { color: var(--muted); font-size: 13px; }
+  .meal-status { display: inline-flex; gap: 6px; align-items: center; padding: 4px 10px; border-radius: 9999px; background: var(--blue-soft); font-size: 11px; font-weight: 700; letter-spacing: .44px; }
+  .meal h3 { font-size: 18px; font-weight: 700; }
+  .meal .items { font-size: 15px; line-height: 1.5; }
+  .meal .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+  .meal .foot { margin-top: auto; display: flex; justify-content: space-between; align-items: center; padding-top: 8px; }
+  .meal .stars { color: var(--star); font-size: 16px; letter-spacing: 2px; }
+  .meal .stars .off { color: #d9c3b5; }
+  .meal-photo { height: 180px; border-radius: 12px; overflow: hidden; position: relative; background: linear-gradient(160deg,#e8c9a6,#c79c6f 60%,#7a5a3f); }
+  .meal-photo .cap { position: absolute; left: 8px; bottom: 8px; background: rgba(40,48,68,.85); color: #eef0ff; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 6px; }
+  .featured-badge { position: absolute; top: -12px; right: 24px; background: var(--green); color: #fff; font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 9999px; }
+  .meal-rating-top { font-size: 11px; font-weight: 700; color: var(--star); }
+  .cta-strip { margin-top: 24px; background: var(--blue-pale); border-radius: 16px; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .cta-strip p { font-size: 15px; color: var(--ink); font-weight: 500; }
+
+  /* Feedback (Section 2824) */
+  .feedback-head { max-width: 672px; }
+  .feedback-head p { font-size: 18px; margin-top: 12px; }
+  .feedback-grid { display: grid; grid-template-columns: 1.27fr 1fr; gap: 32px; margin-top: 48px; align-items: start; }
+  .pillars { display: flex; flex-direction: column; gap: 16px; }
+  .pillar { display: flex; gap: 16px; background: #fff; border-radius: 16px; padding: 16px; box-shadow: var(--shadow); align-items: flex-start; }
+  .pillar .ic { width: 40px; height: 40px; border-radius: 12px; background: var(--blue-soft); display: grid; place-items: center; flex-shrink: 0; font-size: 18px; }
+  .pillar h3 { font-size: 16px; }
+  .pillar p { font-size: 15px; margin-top: 4px; }
+  .widget { background: #fff; border-radius: 16px; box-shadow: var(--shadow-lg); padding: 24px; position: relative; }
+  .widget-head { display: flex; justify-content: space-between; align-items: flex-start; }
+  .widget-head small { font-size: 11px; color: var(--muted); font-weight: 700; letter-spacing: .44px; text-transform: uppercase; }
+  .widget-head h4 { font-size: 20px; margin-top: 4px; }
+  .widget .label { font-size: 12px; font-weight: 700; color: var(--ink); margin: 20px 0 10px; letter-spacing: .24px; }
+  .rating { display: flex; gap: 8px; align-items: center; }
+  .rating button { font-size: 26px; color: #d9c3b5; transition: transform .1s; }
+  .rating button.on { color: var(--star); }
+  .rating button:hover { transform: scale(1.12); }
+  .rating output { margin-left: 12px; font-size: 13px; font-weight: 700; color: var(--muted); }
+  .select { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid #e2bfb2; background: #fff; font: inherit; color: var(--ink); }
+  .quick-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .quick-tags button { padding: 5px 12px; border-radius: 9999px; background: var(--blue-soft); font-size: 12px; font-weight: 600; color: var(--body); }
+  .quick-tags button.on { background: var(--green-soft); color: #002113; }
+  .textarea { width: 100%; min-height: 60px; padding: 12px; border-radius: 10px; border: 1px solid #e2bfb2; font: inherit; font-size: 14px; color: var(--ink); resize: vertical; background: #fff; }
+  .widget .submit { width: 100%; margin-top: 20px; padding: 12px; border-radius: 12px; background: var(--primary); color: #fff; font-weight: 600; font-size: 14px; }
+  .widget .submit:hover { box-shadow: var(--shadow-lg); }
+  .widget .fine { text-align: center; font-size: 12px; color: var(--muted); margin-top: 12px; }
+  .thanks { display: none; margin-top: 12px; padding: 10px 12px; border-radius: 10px; background: var(--green-soft); color: #002113; font-size: 13px; font-weight: 600; text-align: center; }
+
+  /* Admin hub (Section 1:615) */
+  .admin-wrap { max-width: 880px; margin: 0 auto; text-align: center; }
+  .admin-wrap p { font-size: 18px; margin-top: 12px; }
+  .admin-card { margin-top: 48px; background: #fff; border-radius: 16px; box-shadow: var(--shadow-lg); padding: 40px; text-align: left; }
+  .admin-points { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px 40px; }
+  .admin-points .pt .bullet { width: 40px; height: 40px; border-radius: 12px; background: var(--blue-soft); display: grid; place-items: center; font-size: 18px; margin-bottom: 12px; }
+  .admin-points h3 { font-size: 16px; }
+  .admin-points p { font-size: 14px; margin-top: 6px; }
+  .closing { margin-top: 32px; text-align: center; font-size: 15px; color: var(--primary); font-weight: 600; }
+
+  /* Reviews (Section 1:554 is hero-adjacent review block) */
+  .reviews-head { text-align: left; }
+  .reviews-head p { font-size: 18px; margin-top: 12px; }
+  .reviews { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; }
+  .review { background: #fff; border-radius: 16px; box-shadow: var(--shadow); padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+  .review .stars { color: var(--star); letter-spacing: 2px; font-size: 14px; }
+  .review blockquote { font-size: 15px; color: var(--ink); line-height: 1.5; flex: 1; }
+  .review .who { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .review .who strong { font-size: 14px; display: block; }
+  .review .who span { font-size: 12px; color: var(--muted); }
+
+  /* FAQ (Section 6579) */
+  .faq-wrap { max-width: 880px; margin: 0 auto; text-align: center; }
+  .faq-wrap p { font-size: 16px; margin-top: 12px; }
+  .faq { margin-top: 40px; display: flex; flex-direction: column; gap: 8px; text-align: left; }
+  .faq details { background: #fff; border-radius: 12px; box-shadow: var(--shadow); padding: 16px; }
+  .faq summary { list-style: none; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-family: var(--font-head); font-weight: 600; font-size: 16px; color: var(--ink); }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "▾"; color: var(--muted); transition: transform .2s; }
+  .faq details[open] summary::after { transform: rotate(180deg); }
+  .faq details p { margin-top: 12px; font-size: 15px; }
+
+  /* Final CTA (Section 6287) */
+  .final { padding: 48px 0 96px; }
+  .final-card { position: relative; overflow: hidden; background: #fff; border-radius: 24px; box-shadow: var(--shadow-lg); padding: 64px 48px; text-align: center; }
+  .final-card .blob-a { position: absolute; width: 320px; height: 320px; top: -96px; right: -96px; border-radius: 50%; background: #ffdbce; opacity: .5; filter: blur(40px); }
+  .final-card .blob-b { position: absolute; width: 320px; height: 320px; bottom: -96px; left: -96px; border-radius: 50%; background: #dae2fd; opacity: .6; filter: blur(40px); }
+  .final-card > * { position: relative; }
+  .final-card .pill { margin: 0 auto; }
+  .final-card h2 { margin-top: 16px; }
+  .final-card p { font-size: 18px; max-width: 576px; margin: 16px auto 0; }
+  .final-actions { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-top: 32px; }
+  .trust-row { display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; margin-top: 32px; font-size: 13px; font-weight: 600; color: var(--body); }
+  .trust-row span { display: inline-flex; align-items: center; gap: 8px; }
+  .trust-row i { width: 22px; height: 22px; border-radius: 50%; background: var(--green-soft); display: inline-grid; place-items: center; font-style: normal; font-size: 11px; color: var(--green); }
+
+  /* Footer */
+  .site-footer { background: #f2f3ff; padding: 56px 0 32px; }
+  .footer-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; gap: 32px; }
+  .footer-grid h5 { font-family: var(--font-head); font-size: 15px; color: var(--ink); margin-bottom: 14px; font-weight: 700; }
+  .footer-grid ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .footer-grid li, .footer-grid a { font-size: 14px; color: var(--body); }
+  .footer-grid a:hover { color: var(--primary); }
+  .footer-brand p { font-size: 14px; margin-top: 12px; max-width: 274px; }
+  .tagline { font-family: var(--font-head); font-weight: 700; color: var(--ink); margin-top: 12px; font-size: 14px; }
+  .footer-bottom { margin-top: 40px; padding-top: 24px; border-top: 1px solid rgba(226,191,178,.4); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 13px; color: var(--muted); }
+  .footer-bottom nav { display: flex; gap: 20px; }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .nav { display: none; }
+    .menu-toggle { display: block; }
+  }
+  @media (max-width: 960px) {
+    h1 { font-size: 40px; }
+    h2 { font-size: 30px; }
+    .hero-grid, .voices, .feedback-grid { grid-template-columns: 1fr; }
+    .hero-visual { margin-top: 24px; }
+    .mini-widget { left: 8px; }
+    .bento { grid-template-columns: 1fr 1fr; }
+    .bento .card.span-2 { grid-column: span 2; }
+    .admin-points { grid-template-columns: 1fr 1fr; }
+    .reviews { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 720px) {
+    .container { padding: 0 20px; }
+    .section { padding: 64px 0; }
+    .live-pill { display: none; }
+    .header-actions .btn { display: none; }
+    .bento, .meal-grid { grid-template-columns: 1fr; }
+    .bento .card.span-2 { grid-column: span 1; }
+    .stats-strip { grid-template-columns: 1fr 1fr 1fr; }
+    .admin-points { grid-template-columns: 1fr; }
+    .admin-card { padding: 24px; }
+    .quote { padding: 28px; }
+    .quote blockquote { font-size: 20px; }
+    .final-card { padding: 40px 24px; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .mini-widget { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER (Figma: Header 1:833) ============ -->
+<header class="site-header">
+  <div class="container header-inner">
+    <div style="display:flex;align-items:center;gap:24px;">
+      <a href="#top" class="brand">
+        <span class="logo-mark">MC</span>
+        <span class="brand-name">Mess<br>Connect</span>
+      </a>
+      <span class="live-pill"><span class="dot"></span>Lunch Live: 12:30 PM – 2:30 PM</span>
+    </div>
+    <nav class="nav">
+      <a href="#menu">Today's Menu</a>
+      <a href="#how">How It Works</a>
+      <a href="#feedback">Give Feedback</a>
+      <a href="#impact">Campus Impact</a>
+      <a href="#admin">Admin Hub</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="header-actions">
+      <a href="#feedback" class="btn btn-soft btn-sm">Give Feedback</a>
+      <a href="#menu" class="btn btn-primary btn-sm">View Today's Menu</a>
+      <span class="avatar" aria-hidden="true"></span>
+      <button class="menu-toggle" aria-label="Menu" onclick="document.querySelector('.nav').style.display = document.querySelector('.nav').style.display === 'flex' ? 'none' : 'flex'; document.querySelector('.nav').style.flexDirection='column';">☰</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============ HERO (Figma: Section 1:114) ============ -->
+<section class="hero">
+  <span class="glow a"></span>
+  <span class="glow b"></span>
+  <div class="container hero-grid" style="position:relative;">
+    <div>
+      <span class="pill" style="background:#e2e7ff;">
+        <span class="dot"></span>🎓 Official Campus Dining Partner • Serving 4,200+ Students Daily
+      </span>
+      <h1 style="margin-top:16px;">
+        Know Your Meal.<br>
+        Share Your Feedback.<br>
+        <span class="accent">Improve Your Mess.</span>
+      </h1>
+      <p class="sub">Mess Connect makes campus dining simpler by giving students access to daily menus, meal ratings, feedback, and important dining updates — all in one place.</p>
+      <p class="detail">No more wondering what's for lunch, waiting to share complaints, or struggling to make your voice heard. Check the menu, rate your meal, and help make campus dining better.</p>
+      <div class="cta-row">
+        <a href="#menu" class="btn btn-primary">🍴 View Today's Menu</a>
+        <a href="#feedback" class="btn btn-soft">⭐ Give Feedback</a>
+      </div>
+      <div class="stats-strip">
+        <div class="stat"><div class="num gold">4.4 ★</div><div class="label">AVERAGE RATING</div></div>
+        <div class="stat"><div class="num">18,400+</div><div class="label">MEAL REVIEWS</div></div>
+        <div class="stat"><div class="num green">98%</div><div class="label">DAILY MENU ACCURACY</div></div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-photo">
+        <div class="photo placeholder-img" role="img" aria-label="Campus cafeteria dining hall filled with smiling university students enjoying hot meal">
+          <div class="photo-gradient"></div>
+          <div class="photo-tag"><span class="dot"></span>Live at Mess Hall #2 (South Wing)</div>
+          <div class="special-card">
+            <div class="special-top">
+              <span class="special-label">Today's Special • Lunch</span>
+              <span class="chip amber">★ 4.6</span>
+            </div>
+            <h4>Paneer Butter Masala &amp; Dal Makhani</h4>
+            <div class="special-meta">
+              <span>Fresh rotis, Jeera rice &amp; Gulab Jamun</span>
+              <b>🟢 640+ Students Rated</b>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mini-widget">
+        <div class="mini-icon">✓</div>
+        <div><strong>Verified Student Polls</strong><span>Real-time catering feedback</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BENTO FEATURES (Figma: Section 1:5) ============ -->
+<section class="section alt" id="how">
+  <div class="container">
+    <div class="bento-head">
+      <div>
+        <span class="eyebrow">Why Mess Connect</span>
+        <h2 style="margin-top:12px;">Better Dining Starts With Your Voice.</h2>
+      </div>
+      <p class="intro">Everything you need to plan meals, share opinions, and see what actually changes on campus.</p>
+    </div>
+
+    <div class="bento">
+      <article class="card">
+        <div class="icon-box">📋</div>
+        <h3>Check the daily breakfast, lunch, snacks, and dinner menu</h3>
+        <p>Live updates on meal times, chef rotations, and nutrient breakdowns before stepping into the line.</p>
+        <div class="foot"><span class="tag">Updated daily</span></div>
+      </article>
+
+      <article class="card">
+        <div class="icon-box">⭐</div>
+        <h3>Rate your meals with a simple star-based system</h3>
+        <p>Submit tap-to-rate scores in under 5 seconds for quality, taste, freshness, and cleanliness.</p>
+        <div class="foot">
+          <div class="inline-chip"><span class="star-row" style="font-size:14px;">★★★★★</span> Preview your rating</div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="icon-box">💬</div>
+        <h3>Share feedback and suggestions directly with mess management</h3>
+        <p>Zero bureaucracy. Your tickets route directly to hostel wardens and executive mess managers.</p>
+        <div class="foot"><span class="inline-chip">✓ Tickets tracked to resolution</span></div>
+      </article>
+
+      <article class="card">
+        <div class="icon-box">📊</div>
+        <h3>Help identify popular and unpopular meals</h3>
+        <p>Data reveals campus favorite gravies, flatbread quality, and dishes that need taste revamps.</p>
+        <div class="foot chips"><span class="chip">Top gravies</span><span class="chip">Flatbread quality</span></div>
+      </article>
+
+      <article class="card span-2">
+        <div class="icon-box">🧭</div>
+        <h3>Make student opinions part of dining decisions</h3>
+        <p>Every rating and suggestion feeds into weekly menu reviews, so recurring issues get fixed and favorites come back more often.</p>
+        <div class="foot" style="display:flex;gap:24px;flex-wrap:wrap;font-size:13px;color:var(--body);font-weight:600;">
+          <span>✓ Verified student accounts</span>
+          <span>✓ Anonymous options</span>
+          <span>✓ Monthly published changes</span>
+        </div>
+      </article>
+    </div>
+
+    <div class="trust-banner">
+      <div class="left">
+        <div class="icon-box">🛡️</div>
+        <div>
+          <h4>Trusted by students and mess administrators alike</h4>
+          <p>Verified ratings, transparent updates, and one channel for every dining concern.</p>
+        </div>
+      </div>
+      <div class="badge">Only verified students can rate</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STUDENT VOICES (Figma: Section 1:519) ============ -->
+<section class="section" id="impact">
+  <div class="container voices">
+    <div>
+      <span class="eyebrow">Campus Impact</span>
+      <h2 style="margin-top:12px;">Built Around Student Voices.</h2>
+      <p style="margin-top:24px;">Mess Connect creates a direct connection between students and campus dining management. Students can easily share their dining experiences while administrators can understand preferences, identify recurring issues, and make better decisions.</p>
+      <div class="micro">
+        <div class="m"><div class="v">+32%</div><div class="k">SATISFACTION GROWTH</div></div>
+        <div class="m"><div class="v">2.1d</div><div class="k">AVG ISSUE RESOLUTION</div></div>
+        <div class="m"><div class="v">48</div><div class="k">RECIPES ADOPTED</div></div>
+      </div>
+    </div>
+    <figure class="quote">
+      <div class="qmark">“</div>
+      <blockquote>Every meal is an experience. Every opinion can make the next one better.</blockquote>
+      <div class="by">
+        <div class="av"></div>
+        <div><strong>Mess Connect Team</strong><span>Student Culinary Collective</span></div>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ MENU (Figma: Section 1:198) ============ -->
+<section class="section alt" id="menu">
+  <div class="container">
+    <div class="meals-head">
+      <div>
+        <span class="eyebrow">Real-Time Cafeteria Schedule</span>
+        <h2 style="margin-top:12px;">What's Cooking Today?</h2>
+        <p>Check your complete daily menu before heading to the mess.</p>
+      </div>
+      <div class="action-group">
+        <a href="#" class="btn btn-soft btn-sm">⬇ Download PDF</a>
+        <a href="#" class="btn btn-primary btn-sm">Weekly Schedule 📅</a>
+      </div>
+    </div>
+
+    <div class="day-tabs">
+      <div class="tabs">
+        <button class="tab active">Monday, Oct 24 • Today</button>
+        <button class="tab">Tuesday, Oct 25</button>
+        <button class="tab">Wednesday, Oct 26</button>
+        <button class="tab">Thursday, Oct 27</button>
+        <button class="tab">Friday, Oct 28</button>
+      </div>
+      <div class="chips" id="diet-chips">
+        <button class="chip active" data-filter="all">All Items</button>
+        <button class="chip green" data-filter="veg">● Vegetarian</button>
+        <button class="chip amber" data-filter="protein">High Protein</button>
+        <button class="chip muted" data-filter="special">Special Feast</button>
+      </div>
+    </div>
+
+    <div class="meal-grid">
+      <!-- Breakfast -->
+      <article class="card meal" data-tags="veg">
+        <div class="meal-top">
+          <div class="meal-time"><span class="chip">Breakfast</span><small>7:30 AM – 9:30 AM</small></div>
+          <span class="meal-status"><span class="dot" style="background:#8e7166;"></span>Served • 4.5★ (320 ratings)</span>
+        </div>
+        <h3>Morning Refresh &amp; Hot Breakfast</h3>
+        <p class="items">Masala Dosa, Sambar, Coconut Chutney, Boiled Eggs / Sprouted Moong, Fresh Seasonal Fruits, Hot Tea &amp; Filter Coffee</p>
+        <div class="tags"><span class="tag">South Indian</span><span class="tag green">Pure Veg Available</span><span class="tag">Egg Protein Station</span></div>
+        <div class="foot">
+          <div class="stars">★★★★<span class="off">★</span></div>
+          <a href="#feedback" class="btn btn-soft btn-sm">Rate This Meal</a>
+        </div>
+      </article>
+
+      <!-- Lunch (featured) -->
+      <article class="card meal featured" data-tags="protein">
+        <span class="featured-badge">🟢 Serving Now</span>
+        <div class="meal-top">
+          <div class="meal-time"><span class="chip amber" style="background:#ffdbce;color:#370e00;">Lunch</span><small>12:30 PM – 2:30 PM</small></div>
+          <span class="meal-rating-top">4.7★ (610 ratings)</span>
+        </div>
+        <div class="meal-photo placeholder-img" role="img" aria-label="Fresh hot student thali lunch meal">
+          <span class="cap">Authentic Deluxe Campus Thali</span>
+        </div>
+        <h3>Royal North-Indian Lunch Platter</h3>
+        <p class="items">Shahi Paneer, Dal Tadka, Jeera Rice, Tawa Phulkas, Crispy Boondi Raita, Roasted Papad, Fresh Kachumber Salad, Gulab Jamun</p>
+        <div class="tags"><span class="tag green">Student Favorite</span><span class="tag amber">Dessert Included</span><span class="tag">Unlimited Refills</span></div>
+        <div class="foot">
+          <div class="stars">★★★★★</div>
+          <a href="#feedback" class="btn btn-primary btn-sm">Rate This Meal</a>
+        </div>
+      </article>
+
+      <!-- Snacks -->
+      <article class="card meal" data-tags="special">
+        <div class="meal-top">
+          <div class="meal-time"><span class="chip">High Tea &amp; Snacks</span><small>5:00 PM – 6:15 PM</small></div>
+          <span class="meal-status"><span class="dot" style="background:#825100;"></span>Upcoming • 4.3★ (240 ratings)</span>
+        </div>
+        <h3>Evening Refreshment</h3>
+        <p class="items">Crispy Vegetable Samosa with Mint Chutney, Poha with Sev, Marie Biscuits, Adrak Masala Chai &amp; Lemon Tea</p>
+        <div class="tags"><span class="tag">Warm Snacks</span><span class="tag">Kettle Brewed Chai</span></div>
+        <div class="foot">
+          <div class="stars">★★★★<span class="off">★</span></div>
+          <a href="#feedback" class="btn btn-soft btn-sm">Rate This Meal</a>
+        </div>
+      </article>
+
+      <!-- Dinner -->
+      <article class="card meal" data-tags="special">
+        <div class="meal-top">
+          <div class="meal-time"><span class="chip">Dinner</span><small>8:00 PM – 10:00 PM</small></div>
+          <span class="meal-status"><span class="dot"></span>Upcoming • 4.6★ (490 ratings)</span>
+        </div>
+        <h3>Campus Comfort Dinner</h3>
+        <p class="items">Punjabi Chole, Bhature / Butter Roti, Steamed Basmati Rice, Yellow Moong Dal, Mixed Veg Korma, Cut Fruits &amp; Sweet Kheer</p>
+        <div class="tags"><span class="tag amber">Chef's Dinner Special</span><span class="tag green">Sweet Dish</span></div>
+        <div class="foot">
+          <div class="stars">★★★★★<span class="off"></span></div>
+          <a href="#feedback" class="btn btn-soft btn-sm">Rate This Meal</a>
+        </div>
+      </article>
+    </div>
+
+    <div class="cta-strip">
+      <p>📅 Looking for upcoming weekend specials and festive dinner schedules?</p>
+      <a href="#" class="btn btn-primary">View Full Menu (Weekly Schedule)</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEEDBACK (Figma: Section 2824) ============ -->
+<section class="section" id="feedback">
+  <div class="container">
+    <div class="feedback-head">
+      <span class="eyebrow">Eat. Rate. Improve.</span>
+      <h2 style="margin-top:12px;">Eat. Rate. Improve.</h2>
+      <p>Had a great meal? Loved a particular dish? Think something needs improvement? Tell us.</p>
+    </div>
+
+    <div class="feedback-grid">
+      <div class="pillars">
+        <div class="pillar">
+          <div class="ic">📋</div>
+          <div><h3>Check the menu</h3><p>See every dish for the day before you walk in, with timings for each meal.</p></div>
+        </div>
+        <div class="pillar">
+          <div class="ic">⭐</div>
+          <div><h3>Rate every meal</h3><p>Score quality, taste, freshness and cleanliness in a few taps.</p></div>
+        </div>
+        <div class="pillar">
+          <div class="ic">💬</div>
+          <div><h3>Share suggestions</h3><p>Send ideas or complaints straight to the mess team, tracked to completion.</p></div>
+        </div>
+        <div class="pillar">
+          <div class="ic">📈</div>
+          <div><h3>See what's popular</h3><p>Data reveals campus favourite gravies, flatbread quality, and dishes that need work.</p></div>
+        </div>
+        <div class="pillar">
+          <div class="ic">🥗</div>
+          <div><h3>Shape next week's menu</h3><p>Upvoted dishes and recurring pain points guide the next menu cycle.</p></div>
+        </div>
+      </div>
+
+      <form class="widget" id="signup-form" novalidate>
+        <div class="widget-head">
+          <div>
+            <small>Get started</small>
+            <h4>Rate Today's Lunch</h4>
+          </div>
+          <span class="chip green">● Live now</span>
+        </div>
+
+        <div class="label">Name</div>
+        <input class="textarea" id="name" name="name" type="text" placeholder="Your full name" autocomplete="name" required style="min-height:0;">
+
+        <div class="label">Email</div>
+        <input class="textarea" id="email" name="email" type="email" placeholder="you@campus.edu" autocomplete="email" required style="min-height:0;">
+
+        <div class="label">Phone</div>
+        <input class="textarea" id="phone" name="phone" type="tel" placeholder="+91 98765 43210" autocomplete="tel" required style="min-height:0;">
+
+        <button class="submit" id="submit" type="submit">Submit ➤</button>
+        <div class="thanks" id="thanks" role="status">Thanks! Your details were sent.</div>
+        <div class="thanks" id="error" role="alert" style="background:#ffdbce;color:#7f2b00;">Something went wrong. Please try again.</div>
+        <p class="fine">Takes under 5 seconds · We only use this to contact you</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ADMIN HUB (Figma: Section 1:615) ============ -->
+<section class="section alt" id="admin">
+  <div class="container">
+    <div class="admin-wrap">
+      <span class="eyebrow">For Mess Administrators</span>
+      <h2 style="margin-top:12px;">Admin Hub Preview</h2>
+      <p>Turn raw student feedback into decisions you can act on this week.</p>
+    </div>
+    <div class="admin-card">
+      <div class="admin-points">
+        <div class="pt"><div class="bullet">📥</div><h3>View student feedback</h3><p>Instant notifications and sentiment analysis grouped by meal service and hostel block.</p></div>
+        <div class="pt"><div class="bullet">📊</div><h3>Monitor meal ratings</h3><p>Real-time star tracking by breakfast, lunch, tea, and dinner with historical trend lines.</p></div>
+        <div class="pt"><div class="bullet">🔎</div><h3>Identify frequently reported issues</h3><p>Spot recurring pain points in food temperature, spice balance, and refill turnaround speed.</p></div>
+        <div class="pt"><div class="bullet">🧠</div><h3>Understand student food preferences</h3><p>Identify the most upvoted recipes of the month to plan crowd-pleaser menus.</p></div>
+        <div class="pt"><div class="bullet">📝</div><h3>Update daily menus</h3><p>One-click changes sent instantly to 4,000+ student phones when seasonal supply shifts happen.</p></div>
+        <div class="pt"><div class="bullet">🥘</div><h3>Improve meal planning</h3><p>Minimize plate waste by adjusting bulk cooking volumes to actual student dining turnout.</p></div>
+      </div>
+      <p class="closing">Every change is logged, so you can show students exactly what improved and why.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REVIEWS (Figma: Section 1:615 "What Students Are Saying") ============ -->
+<section class="section">
+  <div class="container">
+    <div class="reviews-head">
+      <span class="eyebrow">Testimonials</span>
+      <h2 style="margin-top:12px;">What Students Are Saying.</h2>
+      <p>Real campus voices making our dining hall better every semester.</p>
+    </div>
+    <div class="reviews">
+      <article class="review">
+        <div class="stars">★★★★★</div>
+        <blockquote>“Now I can check the mess menu before going to eat. It makes planning my meals much easier.”</blockquote>
+        <div class="who"><div><strong>Priya S.</strong><span>3rd year, Hostel Block B</span></div><span class="chip green">Verified</span></div>
+      </article>
+      <article class="review">
+        <div class="stars">★★★★★</div>
+        <blockquote>“The feedback system is simple and actually gives students a way to share their opinions.”</blockquote>
+        <div class="who"><div><strong>Arjun M.</strong><span>2nd year, Hostel Block A</span></div><span class="chip green">Verified</span></div>
+      </article>
+      <article class="review">
+        <div class="stars">★★★★★</div>
+        <blockquote>“I like being able to rate individual meals instead of giving general feedback.”</blockquote>
+        <div class="who"><div><strong>Neha R.</strong><span>Final year, Day Scholar</span></div><span class="chip green">Verified</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ (Figma: Section 5579) ============ -->
+<section class="section alt" id="faq">
+  <div class="container">
+    <div class="faq-wrap">
+      <span class="eyebrow">FAQ</span>
+      <h2 style="margin-top:12px;">Frequently Asked Questions</h2>
+      <p>Quick answers about how Mess Connect works for students and mess staff.</p>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>What is Mess Connect?</summary>
+        <p>Mess Connect is a campus dining platform that allows students to view daily menus, rate meals, and submit feedback.</p>
+      </details>
+      <details>
+        <summary>Who can rate meals?</summary>
+        <p>Only verified students with a campus login can submit ratings, so every score reflects a real diner.</p>
+      </details>
+      <details>
+        <summary>Is my feedback anonymous?</summary>
+        <p>Yes. Ratings are anonymous by default. Your hostel block is used only to group results.</p>
+      </details>
+      <details>
+        <summary>How quickly are complaints addressed?</summary>
+        <p>Tickets route directly to hostel wardens and mess managers, and resolution times are published monthly.</p>
+      </details>
+      <details>
+        <summary>Where do I see the weekly schedule?</summary>
+        <p>Use the “Weekly Schedule” button in the menu section to see the full week and download it as a PDF.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA (Figma: Section 6287) ============ -->
+<section class="final">
+  <div class="container">
+    <div class="final-card">
+      <span class="blob-a"></span>
+      <span class="blob-b"></span>
+      <span class="pill">🎯 Free Audit Available</span>
+      <h2>Ready to Make Your Voice Count?</h2>
+      <p>Join thousands of students who check the menu, rate their meals, and help shape campus dining every day.</p>
+      <div class="final-actions">
+        <a href="https://payments.cashfree.com/forms/getaudit" target="_blank" rel="noopener" class="btn btn-primary">Free Audit for ₹1 →</a>
+        <a href="#menu" class="btn btn-soft">View Today's Menu</a>
+      </div>
+      <div class="trust-row">
+        <span><i>✓</i>Verified student ratings</span>
+        <span><i>✓</i>Anonymous by default</span>
+        <span><i>✓</i>Updates in real time</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER (Figma: Footer 1:770) ============ -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="brand">
+          <span class="logo-mark">MC</span>
+          <span class="brand-name">Mess<br>Connect</span>
+        </div>
+        <div class="tagline">Eat. Rate. Connect. Improve.</div>
+        <p>Real-time mess quality transparency and student culinary collective.</p>
+      </div>
+      <div>
+        <h5>Quick Links</h5>
+        <ul>
+          <li><a href="#top">Home</a></li>
+          <li><a href="#menu">Today's Menu</a></li>
+          <li><a href="#feedback">Give Feedback</a></li>
+          <li><a href="#reviews">Reviews</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="mailto:mess-operations@campus.edu">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Dining Hours</h5>
+        <ul>
+          <li>Breakfast: 07:30 AM – 09:30 AM</li>
+          <li>Lunch: 12:30 PM – 02:30 PM</li>
+          <li>High Tea: 05:00 PM – 06:15 PM</li>
+          <li>Dinner: 07:30 PM – 09:45 PM</li>
+        </ul>
+      </div>
+      <div>
+        <h5>Campus Dining Office</h5>
+        <ul>
+          <li>Student Union Center, Level 2</li>
+          <li><a href="mailto:mess-operations@campus.edu">mess-operations@campus.edu</a></li>
+          <li><a href="tel:+15552346377">+1 (555) 234-MESS</a></li>
+          <li><a href="#faq">Support &amp; Policies</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Mess Connect. All rights reserved.</span>
+      <nav>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Accessibility</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Google Apps Script web app endpoint (Code.gs)
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyswMPGFG-fk-8cylWcoxEqI17GESFQViw01I4G0JqyxHownpoXEv4w3nzDTQcU1XOaYQ/exec";
+
+  const form = document.getElementById("signup-form");
+  const thanks = document.getElementById("thanks");
+  const errorBox = document.getElementById("error");
+  const submitBtn = document.getElementById("submit");
+
+  function showSuccess() {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit ➤";
+    errorBox.style.display = "none";
+    thanks.style.display = "block";
+    form.reset();
+    setTimeout(() => (thanks.style.display = "none"), 4000);
+  }
+
+  function showError() {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit ➤";
+    thanks.style.display = "none";
+    errorBox.style.display = "block";
+  }
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+
+    if (!name || !email || !phone) {
+      showError();
+      return;
+    }
+
+    thanks.style.display = "none";
+    errorBox.style.display = "none";
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Sending…";
+
+    const url = SCRIPT_URL + "?" + new URLSearchParams({ name, email, phone });
+
+    fetch(url, { method: "GET", mode: "no-cors" })
+      .then(() => showSuccess())
+      .catch(() => showError());
+  });
+
+  // Diet filters (menu section)
+  document.querySelectorAll("#diet-chips .chip").forEach((chip) => {
+    chip.addEventListener("click", () => {
+      document.querySelectorAll("#diet-chips .chip").forEach((c) => c.classList.remove("active"));
+      chip.classList.add("active");
+      const f = chip.dataset.filter;
+      document.querySelectorAll(".meal").forEach((m) => {
+        const tags = m.dataset.tags || "";
+        m.style.display = f === "all" || tags.includes(f) ? "" : "none";
+      });
+    });
+  });
+
+  // Day tabs
+  document.querySelectorAll(".tabs .tab").forEach((t) =>
+    t.addEventListener("click", () => {
+      document.querySelectorAll(".tabs .tab").forEach((x) => x.classList.remove("active"));
+      t.classList.add("active");
+    })
+  );
+</script>
+</body>
+</html>
